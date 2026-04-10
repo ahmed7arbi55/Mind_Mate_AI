@@ -1,3 +1,15 @@
+Metadata-Version: 2.4
+Name: mind-mate-ai
+Version: 0.1.0
+Summary: A compassionate AI mental health companion
+License: MIT
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: openai>=1.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+
 # Mind Mate AI
 
 **Mind Mate AI** is a compassionate, AI-powered mental health companion built in Python.  
