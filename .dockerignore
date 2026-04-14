@@ -1,18 +1,72 @@
-# تجاهل ملفات البناء الخاصة بـ .NET
-bin/
-obj/
-publish/
-
-# تجاهل ملفات الـ Git (مساحتها كبيرة جداً)
+# Git files
 .git/
 .gitignore
 
-# تجاهل ملفات الـ Python والـ Virtual Environments
-venv/
-.env/
+# Model files (will be downloaded at runtime)
+*.pt
+*.pth
+*.pkl
+*.h5
+
+# Python cache and build
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info
+dist/
+build/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
 
-# تجاهل ملفات الـ IDE
+# IDE and editors
 .vs/
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Development
+.env
+.env.local
+venv/
+env/
+node_modules/
+
+# Documentation (not needed in container)
+*.md
+docs/
+
+# Test and example files
+test_images/
+sample.jpg
+sample.png
+test_api.py
+EXAMPLES.py
+
+# Docker and build files
+Dockerfile
+docker-compose.yml
+.dockerignore
+build.log
+
+# Development scripts (not needed in production container)
+QUICK_NAV.py
+verify_project.py
+check_environment.py
+
+# Logs
+*.log
+
+# Optional: Ignore these development utilities
+START_HERE.md
+QUICK_START.txt
+download_models.py
