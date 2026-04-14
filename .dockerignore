@@ -1,0 +1,18 @@
+# تجاهل ملفات البناء الخاصة بـ .NET
+bin/
+obj/
+publish/
+
+# تجاهل ملفات الـ Git (مساحتها كبيرة جداً)
+.git/
+.gitignore
+
+# تجاهل ملفات الـ Python والـ Virtual Environments
+venv/
+.env/
+__pycache__/
+*.pyc
+
+# تجاهل ملفات الـ IDE
+.vs/
+.vscode/
