@@ -2,10 +2,13 @@
 .git/
 .gitignore
 
-# Model files (will be downloaded at runtime)
+# Model files
 *.pt
 !yolov8n-face.pt
+
 *.pth
+!repvgg.pth
+
 *.pkl
 *.h5
 
