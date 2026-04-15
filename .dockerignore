@@ -4,6 +4,7 @@
 
 # Model files (will be downloaded at runtime)
 *.pt
+!yolov8n-face.pt
 *.pth
 *.pkl
 *.h5
