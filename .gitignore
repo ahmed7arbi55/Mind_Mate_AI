@@ -135,6 +135,7 @@ Thumbs.db
 
 # Model files (optional - comment out if you want to version control)
 *.pt
+!yolov8n-face.pt
 *.pth
 *.pkl
 *.h5
