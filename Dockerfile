@@ -1,56 +1,26 @@
-# Build stage
-FROM python:3.11-slim AS builder
-
-WORKDIR /build
-
-# Install build dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libsm6 \
-    libxext6 \
-    libxrender-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements
-COPY requirements.txt .
-
-# Install Python packages to user directory
-RUN pip install --no-cache-dir --user -r requirements.txt && \
-    find /root/.local -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true && \
-    find /root/.local -type f -name "*.pyc" -delete 2>/dev/null || true
-
-# Runtime stage
+# استخدم نسخة Slim عشان الحجم يكون صغير
 FROM python:3.11-slim
 
+# تحديد فولدر العمل
 WORKDIR /app
 
-# Install runtime dependencies only
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libsm6 \
-    libxext6 \
-    libxrender-dev \
+# تثبيت الأدوات الأساسية للنظام (لو محتاج مكتبات معينة)
+RUN apt-get update && apt-get install -y \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy pre-built packages from builder
-COPY --from=builder /root/.local /root/.local
-
-# Set environment
-ENV PATH=/root/.local/bin:$PATH \
-    PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1
-
-# Copy only app code (models excluded by .dockerignore)
-COPY app/ ./app/
-COPY run.py .
+# نسخ ملف المتطلبات أولاً (عشان الكاش)
 COPY requirements.txt .
 
-# Create models directory
-RUN mkdir -p /app/models
+# السحر هنا: تثبيت PyTorch نسخة الـ CPU فقط عشان توفر 3 جيجا!
+RUN pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu torch torchvision
 
-EXPOSE 8000
+# تثبيت باقي المكتبات
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/health', timeout=5)" || exit 1
+# نسخ باقي ملفات المشروع
+COPY . .
 
-CMD ["python", "run.py"]
+# تشغيل FastAPI (تأكد إن اسم ملف التشغيل عندك هو main.py)
+# Railway بيحتاج الـ Host يكون 0.0.0.0 والـ Port هو اللي بيحدده
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
